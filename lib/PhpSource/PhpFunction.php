@@ -29,6 +29,7 @@ class PhpFunction extends PhpElement
      * @var PhpDocComment A comment in phpdoc format that describes the function
      */
     private $comment;
+    private $returnTypeWillChange = false;
 
     /**
      * @param string        $access
@@ -37,13 +38,14 @@ class PhpFunction extends PhpElement
      * @param string        $source
      * @param PhpDocComment $comment
      */
-    public function __construct($access, $identifier, $params, $source, PhpDocComment $comment = null)
+    public function __construct($access, $identifier, $params, $source, PhpDocComment $comment = null, $returnTypeWillChange = false)
     {
-        $this->access     = $access;
-        $this->identifier = $identifier;
-        $this->params     = $params;
-        $this->source     = $source;
-        $this->comment    = $comment;
+        $this->access                   = $access;
+        $this->identifier               = $identifier;
+        $this->params                   = $params;
+        $this->source                   = $source;
+        $this->comment                  = $comment;
+        $this->returnTypeWillChange     = $returnTypeWillChange;
     }
 
     /**
@@ -56,6 +58,9 @@ class PhpFunction extends PhpElement
         if ($this->comment !== null) {
             $ret .= $this->getSourceRow($this->comment->getSource());
         }
+
+        if($this->returnTypeWillChange)
+            $ret.="\t#[\ReturnTypeWillChange]\r\n";
 
         $ret .= $this->getSourceRow($this->access.' function '.$this->identifier.'('.$this->params.')');
         $ret .= $this->getSourceRow('{');
