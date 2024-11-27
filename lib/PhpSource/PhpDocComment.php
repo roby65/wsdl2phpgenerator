@@ -84,7 +84,7 @@ class PhpDocComment
     public function getSource()
     {
         $description = '';
-        if (strlen($this->description) > 0) {
+        if ($this->description != null && strlen($this->description) > 0) {
             $preDescription = trim($this->description);
             $lines          = explode(PHP_EOL, $preDescription);
             foreach ($lines as $line) {
